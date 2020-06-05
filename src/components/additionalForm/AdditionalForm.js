@@ -1,36 +1,44 @@
-import React from "react";
 import { useForm } from "react-hook-form";
+import React from "react";
 
 function AdditionalForm(props) {
-  const { register, handleSubmit } = useForm();
-
-  const onSubmit = (data) => console.log(data);
+  const { register, errors } = useForm();
 
   return (
     <div>
-      <form className="additionalForm" onSubmit={handleSubmit(onSubmit)}>
-        <select name="diseases" ref={register({ required: true })}>
-          <option value="artrit">Artrites</option>
-          <option value="backPain">Back pain</option>
-          <option value="mentalIllness">Mental illness</option>
-          <option value="noDiseases">No diseases</option>
-        </select>
-        <br />
+      <select name="diseases" ref={register({ required: true })}>
+        <option value="artrit">Artrites</option>
+        <option value="backPain">Back pain</option>
+        <option value="mentalIllness">Mental illness</option>
+        <option value="noDiseases">No diseases</option>
+      </select>
+      <br />
 
-        <label>Height(cm): </label>
-        <input name="height" ref={register({ required: true })} />
-        <br />
+      <label>Height(cm): </label>
+      <input type="number" name="height" ref={register({ required: true })} />
+      {errors.height && errors.height.type === "required" && (
+        <span>This field is required!</span>
+      )}
 
-        <label>Date of birth(yyyy-mm-dd):</label>
-        <input type="data" ref={register({ required: true })} />
-        <br />
+      <br />
 
-        <label>Bio:</label>
-        <textarea />
-        <br />
+      <label>Date of birth(yyyy-mm-dd):</label>
+      <input
+        type="data"
+        name="dateOfBirth"
+        ref={register({ required: true })}
+      />
+      {errors.data && errors.data.type === "required" && (
+        <span>This field is required!</span>
+      )}
+      <br />
 
-        <input type="submit"></input>
-      </form>
+      <label>Bio:</label>
+      <textarea name="bio" />
+      {errors.bio && errors.bio.type === "required" && (
+        <span>This field is required!</span>
+      )}
+      <br />
     </div>
   );
 }

@@ -1,15 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import Conditional from "../conditional/Conditional";
 import "./form.css";
 
-function Form(props) {
+function Form() {
   const { register, handleSubmit, watch, errors } = useForm();
 
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [password, setPassword] = useState("");
+  const [diseases, setDiseases] = useState("");
+  const [heigth, setHeigth] = useState("");
+  const [email, setEmail] = useState("");
+  const [bio, setBio] = useState("");
+
   const onSubmit = (data) => {
-    data.password === data.confirmPassword
-      ? console.log(data)
-      : console.log("Passwords must match!");
+    if (data.password !== data.confirmPassword) {
+      console.log("Passwords must match!");
+      dateOfBirth && diseases && heigth && bio
+        ? console.log(data)
+        : console.log("Fill in the missing inputs");
+    }
   };
+
+  function handleChange(event) {
+    const { name, value } = event.target;
+    if (name === "firstName") {
+      setFirstName(value);
+      return;
+    }
+    if (name === "lastName") {
+      setLastName(value);
+      return;
+    }
+    if (name === "email") {
+      setEmail(value);
+      return;
+    }
+    if (name === "password") {
+      setPassword(value);
+    }
+  }
 
   return (
     <div>
@@ -18,6 +51,7 @@ function Form(props) {
         <input
           name="firstName"
           ref={register({ required: true, minLength: 2 })}
+          onChange={handleChange}
         />
         {errors.firstName && errors.firstName.type === "required" && (
           <span>This field is required!</span>
@@ -31,6 +65,7 @@ function Form(props) {
         <input
           name="lastName"
           ref={register({ required: true, minLength: 2 })}
+          onChange={handleChange}
         />
         {errors.lastName && errors.lastName.type === "required" && (
           <span>This field is required!</span>
@@ -45,6 +80,7 @@ function Form(props) {
           name="email"
           type="email"
           ref={register({ required: true, minLength: 5 })}
+          onChange={handleChange}
         />
         {errors.email && errors.email.type === "required" && (
           <span>This field is required!</span>
@@ -59,6 +95,7 @@ function Form(props) {
           name="password"
           type="password"
           ref={register({ required: true, minLength: 6 })}
+          onChange={handleChange}
         />
         {errors.password && errors.password.type === "required" && (
           <span>This field is required!</span>
@@ -80,6 +117,13 @@ function Form(props) {
         />
         {errors.confirmPassword && <span>Paswords must match!</span>}
         <br />
+        <Conditional
+          firstName={firstName}
+          lastName={lastName}
+          email={email}
+          password={password}
+        />
+
         <input name="submit" type="submit" />
       </form>
     </div>
